@@ -11,7 +11,7 @@ func main() {
 	ctx := context.Background()
 
 	go callAtomic(ctx)
-	go callCopy(ctx)
+	go callMut(ctx)
 
 	// timeout after 5 seconds
 	<-time.After(5 * time.Second)
@@ -26,10 +26,10 @@ func callAtomic(ctx context.Context) {
 	}
 }
 
-func callCopy(ctx context.Context) {
-	defer rec(ctx, callCopy)
+func callMut(ctx context.Context) {
+	defer rec(ctx, callMut)
 	client := &http.Client{}
-	req, _ := http.NewRequestWithContext(ctx, "GET", "http://localhost:8080/copy", nil)
+	req, _ := http.NewRequestWithContext(ctx, "GET", "http://localhost:8080/mutex", nil)
 	for {
 		client.Do(req)
 	}
